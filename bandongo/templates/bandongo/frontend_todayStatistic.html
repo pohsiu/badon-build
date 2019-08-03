@@ -1,0 +1,114 @@
+{% extends 'bandongo/frontend_base.html' %}
+{% load staticfiles %}
+
+
+
+
+{% block subcontent %}
+    {% if empty == False%}
+        
+        <div><h3 style="color:#F74906;">餐點統計</h3></div>
+        
+        
+            {% for name, value in foods.items %}
+            
+                {% if value %}
+                <div id="s_food{{forloop.counter}}"> 
+                <table class="table">
+                    <input type="hidden" id="food_counter" value="{{forloop.counter}}"/>
+                    <thead>
+                        <tr><th style="background-color:#E1E1E1; color:#00303F;" onclick="foodStatisticToogle({{forloop.counter}})" colspan="5" id="{{forloop.counter}}">{{name}}</th></tr>
+                    
+                        <tr style="background-color:#EDEDE4;">
+                            <th class = "col-sm-3">科室</th>
+                            <th class = "col-sm-2">姓名</th>
+                            <th class = "col-sm-5">品項</th>
+                            <th class = "col-sm-1">數量</th>
+                            <th class = "col-sm-1">金額</th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                    {% for sub in value %}
+                        <tr>
+                            <td>{{ sub.memberName.remark.name }}</td>
+                            <td>{{ sub.memberName }}</td>
+                            <td>{{ sub.foodName }}</td>
+                            <td>{{ sub.num }}</td>
+                            <td>{{ sub.price }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                </div>
+                {% endif %}
+            {% endfor %}
+
+        <div><h3 style="color:#F74906;">飲料統計</h3></div>
+        
+            
+            {% for name, value in drinks.items %}
+                {% if value %}
+                <div id="s_drink{{forloop.counter}}">
+                <table class="table">
+                    <input type="hidden" id="drink_counter" value="{{forloop.counter}}"/>
+                    <thead>
+                        <tr><th style="background-color:#E1E1E1;" onclick="drinkStatisticToogle()" colspan="5">{{name}}</th></tr>
+                    
+                        <tr style="background-color:#EDEDE4;">
+                            
+                            <th class = "col-sm-3">科室</th>
+                            <th class = "col-sm-2">姓名</th>
+                            <th class = "col-sm-5">品項</th>
+                            <th class = "col-sm-1">數量</th>
+                            <th class = "col-sm-1">金額</th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                    {% for sub in value %}
+                        <tr>
+                            
+                            <td>{{ sub.memberName.remark.name }}</td>
+                            <td>{{ sub.memberName }}</td>
+                            <td>{{ sub.drinking }}</td>
+                            <td>{{ sub.num }}</td>
+                            <td>{{ sub.price }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+                </div>
+                {% endif %}
+            {% endfor %}
+            
+    {% else %}
+        <h2>暫無資料</h2>
+    {% endif %}
+{% endblock %}
+
+{% block script2%}
+<script>
+function foodStatisticToogle(id) {
+    var counter = $("#"+id).html();
+    // var table = $('#s_food'+String(counter));
+    // alert(counter);
+    // if (table.style.display === 'none') {
+    //     table.style.display = 'block';
+    // } else {
+    //     table.style.display = 'none';
+    // }
+}
+function drinkStatisticToogle() {
+    var counter= $('#drink_counter');
+    var table = document.getElementById('s_drink'+String(counter));
+    // alert(counter);
+    // if (table.style.display === 'none') {
+    //     table.style.display = 'block';
+    // } else {
+    //     table.style.display = 'none';
+    // }
+}
+</script>
+
+{% endblock %}

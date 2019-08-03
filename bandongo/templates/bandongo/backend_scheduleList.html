@@ -1,0 +1,62 @@
+{% extends "bandongo/backend_base.html" %}
+{% load staticfiles%}
+{% block js %}{% endblock %}
+{% block content %}
+<div class="container">
+    <div><h1>Schedule List</h1></div>
+        <div>
+            {% for index in pages %}
+                {% if index == curPage%}
+                     <a class="btn btn-default btn-xs active" role="button" style="cursor: default;">{{index}}</a>
+                {% else %}
+                    <a class="btn btn-default btn-xs" href="/backend/scheduleListPage/{{index}}/" role="button">{{index}}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>name</th>
+                    <th>Shop</th>
+                    <th>Food</th>
+                    <th>Drink</th>
+                    <th>Due Date Time</th>
+                    <th>Expired</th>
+                    <th>Food Arrived</th>
+                    <th>Drink Arrived</th>
+                    <th>Finished</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for schedule in schedules %}
+                <tr class="{{schedule.page}}" style="display:{{schedule.display}};">
+                    <td>{{ schedule.id }}</td>
+                    <td><a href="/backend/schedule/{{ schedule.id }}/">{{ schedule.name }}</a></td>
+                    <td>{{ schedule.food.name }}</td>
+                    <td>
+                        {% for catalog in schedule.catalogs.all %}
+                        {{ catalog.name }}
+                        {% endfor %}
+                    </td>
+                    <td>{{ schedule.drink.name }}</td>
+                    <td>{{ schedule.date }}</td>
+                    <td>{{ schedule.expire }}</td>
+                    <td>{{ schedule.foodArrived }}</td>
+                    <td>{{ schedule.drinkArrived }}</td>
+                    <td>{{ schedule.finish }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div>
+            {% for index in pages %}
+                {% if index == curPage%}
+                     <a class="btn btn-default btn-xs active" role="button" style="cursor: default;">{{index}}</a>
+                {% else %}
+                    <a class="btn btn-default btn-xs" href="/backend/scheduleListPage/{{index}}/" role="button">{{index}}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "bandongo/backend_base.html" %}
+{% load staticfiles%}
+{% block js %}<script src="{% static 'js/backend_catalogChangePrice.js' %}"></script>{% endblock %}
+{% block content %}
+<div class="container">
+    <div><h1>Change Price</h1></div>
+    {% if schedule %}
+    <div><h3>Catalog</h3></div>
+    <div>
+        <select id="catalog" style="width: 20%;" class="selectpicker" multiple>
+            {% for catalog in catalogs %}
+                <option value="{{catalog.id}}">{{catalog.name}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div><h3>Price Adjustment</h3></div>
+    <div class="radio">
+        <label>
+            <input type="radio" name="adjust" id="add" value="add" checked>
+                Add
+        </label>
+    </div>
+    <div class="radio">
+        <label>
+            <input type="radio" name="adjust" id="minus" value="minus">
+                Minus
+        </label>
+    </div>
+    <div>
+        <input type="number" step="5" class="form-control" style="width: 20%;" id="price" value="0">
+    </div>
+    <div>
+        <label>
+            This will influence current unfinished schedule {{ schedule.name }}!
+        </label>
+    </div>
+    <div style="margin-top: 20px">
+        <button class="btn btn-default" onclick="submit();">Submit</button>
+    </div>
+    {% else %}
+    <div><h3>Please go to catalog list to change price.</h3></div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "bandongo/backend_base.html" %}
+{% load staticfiles%}
+{% block js %}
+<script>
+    function read(not) {
+        $.post(
+            "/backend/readNot",
+            {not: not},
+            function(response) {
+              alert(response);
+            }
+        );
+        
+        $("#"+not).html("Already Read");
+    }
+</script>
+{% endblock %}
+{% block css %}
+{% endblock %}
+{% block content %}
+<div class="container">
+        {% if request.user.is_authenticated %}
+            <div><h1>Balance: ${{ balance }}</h1></div>
+            <div><h1>Notifications</h1></div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Type</th>
+                        <th>Member</th>
+                        <th>Content</th>
+                        <th>Date</th>
+                        <th>Read</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for not in notifications%}
+                    <tr>
+                        <td>{{not.id}}</td>
+                        <td>Wish</td>
+                        <td>{{not.subject}}</td>
+                        <td style="word-break:break-all;">{{not.content}}</td>
+                        <td>{{not.date}}</td>
+                        <td id="{{not.id}}"><button class="btn btn-default" onclick="read({{not.id}})">Got it.</button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <h3>Please <a href="/backend/login">login</a> to access bandongo backend service.</h3>
+        {% endif %}
+</html>
+</div>
+{% endblock %}

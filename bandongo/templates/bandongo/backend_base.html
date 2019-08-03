@@ -1,0 +1,107 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>竹簡訂餐後台</title>
+        <link rel="icon" href="{%static 'icon/lunch-icon-23.png' %}">
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-theme.min.css' %}">
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-select.min.css' %}">
+        <script src="{% static 'js/jquery/jquery-3.1.1.min.js' %}"></script>
+        <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'bootstrap/js/bootstrap-select.min.js' %}"></script>
+        <script src="{% static 'bootstrap/js/bootstrap-filestyle.min.js' %}"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% block js %}{% endblock %}
+        {% block css %}{% endblock %}
+    </head>
+    <body>
+        <nav class="navbar navbar-inverse">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <a class="navbar-brand" href="/backend">Bandongo Backend</a>
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+              <span class="sr-only">Toggle</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span></button>
+            </div>
+            {% if request.user.is_authenticated %}
+            <div class="collapse navbar-collapse" id="myNavbar">
+              <ul class="nav navbar-nav">
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Schedule
+                  <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="/backend/setSchedulePage/">Set Schedule</a></li>
+                    <li><a href="/backend/editSchedulePage/">Edit Schedule</a></li>
+                    <li><a href="/backend/scheduleListPage/1/">Schedule List</a></li>
+                    <li><a href="/backend/emergencyPage/">Emergency</a></li>
+                  </ul>
+                </li>
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Member
+                  <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="/backend/addDepartmentPage/">Add Department</a></li>
+                    <li><a href="/backend/addMemberPage/">Add Member</a></li>
+                    <li><a href="/backend/addValuePage/">Add Value</a></li>
+                    <li><a href="/backend/chuChienPayPage/">Chu Chien Pay</a></li>
+                    <li><a href="/backend/departmentListPage/">Department List</a></li>
+                    <li><a href="/backend/memberListPage/">Member List</a></li>
+                  </ul>
+                </li>
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Shop
+                  <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="/backend/addFoodShopPage/">Add Food Shop</a></li>
+                    <li><a href="/backend/addDrinkShopPage/">Add Drink Shop</a></li>
+                    <li><a href="/backend/foodShopListPage/">Food Shop List</a></li>
+                    <li><a href="/backend/drinkShopListPage/">Drink Shop List</a></li>
+                  </ul>
+                </li>
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Catalog
+                  <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="/backend/catalogChangePricePage/">Change Price Emergency</a></li>
+                    <li><a href="/backend/addCatalogBatchPage/">Add Catalog in Batch</a></li>
+                    <li><a href="/backend/addCatalogPage/">Add Catalog</a></li>
+                    <li><a href="/backend/catalogListPage/">Catalog List</a></li>
+                  </ul>
+                </li>
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Others
+                  <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="/backend/notificationPage/1/">Notifications</a></li>
+                    <li><a href="/backend/messagePage/">Messages</a></li>
+                    <li><a href="/backend/homePicPage/">Home Pic</a></li>
+                    <li><a href="/backend/savelogPage/1/">Save Log</a></li>
+                    <li><a href="/backend/wishPage/">Wish</a></li>
+                    <li><a href="/backend/instantMessage/">SendMessage</a></li>
+                  </ul>
+                </li>
+                <li><a href="/backend/order/">Order</a></li>
+              </ul>
+              <ul class="nav navbar-nav navbar-right">
+                <li><a href="/">Frontend</a></li>
+                <li><a href="/backend/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+              </ul>
+              {% else %}
+              <ul class="nav navbar-nav navbar-right">
+                <li><a href="/backend/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+              </ul>
+              {% endif %}
+            </div>
+            
+          </div>
+        </nav>
+        {% block content %}
+        
+        
+        {% endblock %}
+        
+    </body>
+</html>

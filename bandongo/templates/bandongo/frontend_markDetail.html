@@ -1,0 +1,240 @@
+{% extends 'bandongo/frontend_base.html' %}
+{% load staticfiles %}
+
+ {% block script %}
+ <!-- Latest compiled and minified CSS -->
+
+
+
+
+    <link rel="stylesheet" href="{%static 'bootstrap/css/bootstrap-select.min.css' %}">
+    
+
+    <script src="{% static 'bootstrap/js/bootstrap-select.min.js' %}"></script>
+    <script src="{% static 'js/frontend_orderValidate.js' %}"></script>
+    
+    <script type="text/javascript">
+    function codeAddress() {
+        var member_saving = "{{de_member.saving}}";
+        if(member_saving < 100){
+            bootbox.alert({
+                title:"<h3 style='color:#0C182D; font-weight:bold;'>餘額不足通知</h3>",
+                message: "<h4>您的帳戶餘額不足 <font style='color:red; font-weight:bold;'>壹佰</font> 元，建議進行儲值</h4>",
+                backdrop: true
+                
+        });
+        }
+        
+    }
+    window.onload = codeAddress;
+    </script>
+{% endblock %}
+
+
+{% block subcontent %}
+    
+    
+    
+    
+    
+    {% if schedules %}
+        <h2 id='hold'></h2>
+        {%if due_date %}
+            <table class="table" id='top_table'>
+                
+                <div style="color:#F74906;" class="col-sm-4">
+                    <h3 id='label_duedate'>截止時間：{{due_date | date:'m/d H:i'}}</h3>
+                </div>
+                <div class="col-sm-2"></div>
+                <div style="color:#F74906;" class="col-sm-4">
+                    <h3><font id='countDownTimer'></font></h3>
+                </div>
+                <div class="col-sm-2"></div>
+            </table>
+        {% endif %}
+        
+        <form id="orderForm" name="orderform" onsubmit="return orderForm()" action="" method="" class="post-form" accept-charset="utf-8">
+            {% if list_food.0.foodShop != "休" %}
+                <input type="hidden" name="member_id" value="{{ de_member.id }}"/>
+                <input type="hidden" name="food-len" value="{{ list_food|length }}"/>
+                <input type="hidden" name="schedule_id" value="{{schedules.0.id}}"/>
+                <table class="table">
+                    <thead>
+                    <!--<tr>-->
+                    <!--    <th colspan="4" style="background-color:#E1E1E1;"></th>-->
+                    <!--</tr>-->
+                    <tr style="background-color:#f9a34d; color:#FFFFFF;">
+                        <th class="col-sm-3" style="font-weight:bold;"><h4>本日熱門</h4></th>
+                        
+                        <th class="col-sm-5" ><h4>品項</h4></th>
+                        <th class="col-sm-4" ><h4>累積數量</h4></th>
+                    
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% if top3 %}
+                        {% for top3 in top3 %}
+                        <tr>
+                            <td class="col-sm-3"><img src="/static/pic/medal/medal{{forloop.counter}}.png" class="img-responsive img-circle col-sm-3"  width="40" height="50"></td>
+                            <td class="col-sm-5">{{top3.foodName__name}}</td>
+                            <td class="col-sm-4">{{top3.s_sum}}</td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr><th class="col-sm-12"><h3>正在吸取日月天地精華中...</h3></th></tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+                
+                
+                <table class="table">
+                
+                <tr style="background-color:#EDEDE4;">
+                    <th class="col-sm-3" ><h4>{{list_food.0.foodShop}}</h4></th>
+                    <th class="col-sm-5" ><h4>價格</h4></th>
+                    <th class="col-sm-4" ><h4>數量</h4></th>
+                    
+                </tr>
+                {% for foods in list_food %}
+                    <tr>
+                        <td class="col-sm-3">
+                            <input type="hidden" name="catalog-id{{ forloop.counter }}" value="{{ foods.id }}"/>
+                            <input type="hidden" name="food-name{{ forloop.counter }}" value="{{ foods.name }}"/>
+                            {{foods.name}}
+                        </td>
+                        
+                        <td class="col-sm-5">{{foods.price}}</td>
+                        <td class="col-sm-4">
+                            <select name="food-num{{ forloop.counter }}" class ="selectpicker show-tick form-control"/>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                          	<option value="2">2</option>
+                          	<option value="3">3</option>
+                          	<option value="4">4</option>
+                            <option value="5">5</option>
+                          	</select>
+                        </td>
+                        
+                    </tr>
+                    
+                {% endfor %}
+                
+                </table>
+            {% endif %}
+            
+            {% if pic_beverage.0.name != "休" %}
+                <div class="row">
+                <table class = "table">
+                    <tr>
+                        <th class="col-sm-12" style="background-color:#E1E1E1;"><h4>{{pic_beverage.0.name}}</h4></th>
+                    </tr>
+                    
+                    <tr align="center" >
+                        <td style="text-align:left;">
+                            
+                            <img src="/{{pic_beverage.0.pic}}" class="img-responsive img-center" style="max-width: 100%; 
+        max-height: 100%; display:block; margin:auto; margin-top:15px; margin-bottom:15px;">
+                    
+                            
+                            <div class="form-group">
+                                <label for="drink-name">喝點什麼</label>
+                                <input type = "text" class="form-control" id="drink-name" name="drink-name" placeholder="飲料名稱">
+                                <p></p>
+                                <label for="sugar">甜度</label>
+                                <select class="form-control" id="sugar" name="sugar" class ="selectpicker show-tick form-control">
+                                <option value="無糖">無糖</option>
+                                <option value="微糖">微糖</option>
+                                <option value="半糖">半糖</option>
+                                <option value="少糖">少糖</option>
+                                <option value="正常甜">正常甜</option>
+                                </select>
+                                <p></p>
+                                <label for="ice">冰塊</label>
+                                <select class="form-control" id="ice" name="ice" class ="selectpicker show-tick form-control">
+                                <option value="去冰">去冰</option>
+                                <option value="少冰">少冰</option>
+                                <option value="微冰">微冰</option>
+                                <option value="常溫">常溫</option>
+                                <option value="正常冰">正常冰</option>
+                                <option value="熱的">熱的</option>
+                                </select>
+                                <p></p>
+                                <label for="drink-comment">備註</label>
+                                <input type = "text" class="form-control" id="drink-comment" name="drink-comment" placeholder="加珍珠">
+                                <p></p>
+                                <label for="drink-price">金額</label>
+                                <input type = "number" class="form-control" min="0" max="100" id="drink-price" name="drink-price" placeholder="50">
+                            </div>
+                            
+                    
+                 
+            {% else %}
+                <input type="hidden" name="drink-name" value=""/>
+                <input type="hidden" name="drink-price" value=""/>
+                <input type="hidden" name="sugar" value=""/>
+                <input type="hidden" name="ice" value=""/>
+                <input type="hidden" name="drink-comment" value=""/>
+            {% endif %}
+                    <br>
+                    <input type="submit" class="btn btn-default" value="送出"></input>
+                    </td>
+                    </tr>
+                </table>
+                </div>
+        </form>
+    {% else %}
+        <h2>統計截止，不便之處請見諒</h2>
+    {% endif %}
+    
+
+
+
+{% endblock %}
+
+{% block script2 %}
+<script>
+
+var countDownDate = new Date("{{ due_date | date:'Y/m/d H:i'}}").getTime();
+
+
+var x = setInterval(function() {
+    var member_id = document.forms["orderform"]["member_id"].value;
+    
+    var now = new Date().getTime();
+    
+    
+    var distance = countDownDate - now;
+    
+    
+    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    hours = hours + days * 24;
+    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    hours = days * 24 + hours;
+    hours = ('0' + hours).slice(-2);
+    minutes = ('0' + minutes).slice(-2);
+    seconds = ('0' + seconds).slice(-2);
+    document.getElementById("countDownTimer").innerHTML = "剩餘時間："+hours + ":"
+    + minutes + ":" + seconds ;
+    
+    
+    if (distance < 0) {
+        clearInterval(x);
+        document.getElementById("countDownTimer").innerHTML = "時間到!";
+        $('#orderForm').remove();
+        $('#label_duedate').remove();
+        $('#countDownTimer').remove();
+        $('#top_table').remove();
+        document.getElementById("hold").innerHTML= "統計截止，不便之處請見諒";
+        
+    }
+}, 1000);
+</script>
+
+
+
+
+
+
+{% endblock %}

@@ -1,0 +1,28 @@
+@import url(//fonts.googleapis.com/css?family=Open+Sans);
+
+@font-face {
+    font-family: '王漢宗粗明體繁';
+    src: url('boldfonts.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body,button, input, select, textarea,h1 ,h2, h4, h5, h6 { font-family: 
+'微軟正黑體', Microsoft JhengHei ,'微軟正黑體' , Tahoma, Helvetica, Arial, sans-serif;}
+
+
+h3 {
+  font-family:'王漢宗粗明體繁',Arial;
+}
+body {
+  -webkit-animation-duration: 0.1s;
+  -webkit-animation-name: fontfix;
+  -webkit-animation-iteration-count: 1;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-delay: 0.1s;
+}
+
+@-webkit-keyframes fontfix {
+  from { opacity: 1; }
+  to { opacity: 1; }
+}

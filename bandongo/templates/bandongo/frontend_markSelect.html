@@ -1,0 +1,125 @@
+<!-- mark_select.html -->
+
+
+{% extends 'bandongo/frontend_index.html' %}
+
+
+{% block script %}
+
+        <script type="text/javascript">
+            // var js_mark_list = "{{ mark_list }}";
+            // console.log(js_mark_list);
+            // alert(typeof(js_mark_list));
+        </script>
+        <script>
+    
+    $(document).ready(
+        function () {
+            var url = "/mark/json_models";
+            var mark_list;
+            var member_list;
+            $.getJSON(url, function(res) {
+                mark_list=res.mark_list;
+                member_list=res.member_list;
+                
+            });
+            $("select#mark").change(function() {
+                if ($(this).val() == 'Z') {
+                     $("select#member_name").html("<option>選擇姓名</option>");
+                     $("select#member_name").attr('disabled', true);
+                }
+                else {
+                    var brand = $(this).val();
+                    
+                    var options = '<option value="Z">選擇姓名</option>';
+                    for (var i = 0; i < member_list[brand].length; i++) {
+                        options += '<option value="' + member_list[brand][i].id + '">'  + member_list[brand][i].name + '</option>';
+                    }
+                    $("select#member_name").html(options);
+                    $("select#member_name option:first").attr('selected', 'selected');
+                    $("select#member_name").attr('disabled', false);
+                }
+            });
+    
+    
+            $("select#member_name").change(function(vent) {
+                if ($(this).val() == -1) {
+                    return;
+                }
+                
+                var e = document.getElementById("member_name");
+                // var pkk = e.options[e.selectedIndex].value; //pk number
+                // var strUser = e.options[e.selectedIndex].text; //member name
+                
+               
+                // alert(strUser);
+            });
+            });
+        </script>
+        <script>
+            function validateForm() {
+                var name = document.forms["markform"]["member_name"].value;
+                var mark = document.forms["markform"]["mark"].value;// bootbox.alert(name);
+                if (name == "Z" || mark == "Z") {
+                    bootbox.alert("請選擇科室姓名");
+                    return false;
+                }
+            }
+        </script>
+
+{% endblock %}
+        
+        
+{% block content%}
+    <br>
+    <div>
+        <marquee scroll="continuous" onMouseOver="this.scrollAmount=0" onMouseOut="this.scrollAmount=1" scrollamount="1" direction="up" loop="true" width="100%" height="70">
+            <strong>［實用教學］</strong><br>
+            <p>如何在iPhone桌面建立一個圖示連到竹簡訂餐：<a href="static/tutorial.html">連結</a></p>
+            {{home_message.0.content|safe}}
+        </marquee>
+    </div>
+    {% if s_latest %}
+        <h3 style="clear: both; display: inline-block; overflow: hidden; white-space: nowrap;"><b>【{{s_latest.0.name}}】</b></h3>
+        <h4>精選店家：{{s_latest.0.food}}</h4>
+        <h4>精選飲料：{{s_latest.0.drink}}</h4>
+        {% if s_latest.0.foodArrived %}
+            <h4>餐點狀態：已抵達，請逕行取餐</h4>
+        {% else %}
+            <h4>餐點狀態：尚未抵達，請耐心等候</h4>
+        {% endif %}
+        {% if s_latest.0.drink.name != '休' %}
+            {% if s_latest.0.drinkArrived %}
+                <h4>飲料狀態：已抵達，請逕行取餐</h4>
+            {% else %}
+                <h4>飲料狀態：尚未抵達，請耐心等候</h4>
+            {% endif %}
+        {% endif %}
+    {% endif%}
+    <form name="markform" action="" onsubmit="return validateForm()" method="POST" accept-charset="utf-8">{% csrf_token %}
+        <div class="form-group">
+            <br>
+            <h4><label for="mark">科室：</label></h4>
+            <select class="custom-select form-control" name="mark" id="mark" style="width: auto">
+                <option value="Z">選擇科室</option>
+                {% for mark in mark_list %}
+                    <option value="{{ mark.index }}">{{ mark.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <h4><label for="member_name">姓名:</label></h4>
+            <div>          
+                <select class="custom-select form-control" name="member_name" id="member_name" disabled="true" style="width: auto">
+                    <option>選擇姓名</option>
+                </select>
+            </div>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-default">送出</button>
+        <br>
+    </form>
+
+{%endblock%}
+
+

@@ -1,0 +1,188 @@
+{% extends 'bandongo/frontend_base.html' %}
+{% load staticfiles %}
+
+{% block script %}
+<script>
+function getConfirmationFoods(food_id)
+{
+    var id = food_id;
+    
+    bootbox.confirm({
+    title: "Bandongo, 取消訂單",
+    message: " 確定要取消訂單嗎?",
+    buttons: {
+        cancel: {
+            label: '<i class="fa fa-times"></i> 取消',
+            
+        },
+        confirm: {
+            label: '<i class="fa fa-check"></i> 確認',
+            
+        }
+    },
+    callback: function (result) {
+        if(result == true)
+        {
+            $.post(
+                "/frontend/delete_food",
+                {id:id},
+                function(response) {
+                    
+                    if(response == "訂單刪除成功"){
+                        bootbox.alert({
+                            title: "Bandongo, 取消訂單", 
+                            message: response
+                        });
+                        $("#order"+String(id)).remove();
+                    }
+                    else{
+                        bootbox.alert({
+                            title: "Bandongo, 訂單取消失敗", 
+                            message: response
+                        });
+                    }
+                }
+            );
+        }
+        else
+        {
+            console.log("False");
+        }
+        console.log('This was logged in the callback: ' + result);
+    }
+    
+    });
+    
+}
+function getConfirmationDrinks(drink_id)
+{
+    var id = drink_id;
+    
+    bootbox.confirm({
+    title: "Bandongo, 取消訂單",
+    message: " 確定要取消訂單嗎?",
+    buttons: {
+        cancel: {
+            label: '<i class="fa fa-times"></i> 取消',
+            
+        },
+        confirm: {
+            label: '<i class="fa fa-check"></i> 確認',
+            
+        }
+    },
+    callback: function (result) {
+        if(result == true)
+        {
+            $.post(
+                "/frontend/delete_drink",
+                {id:id},
+                function(response) {
+                    
+                    if(response == "訂單刪除成功"){
+                        bootbox.alert({
+                            title: "Bandongo, 取消訂單", 
+                            message: response
+                        });
+                        $("#order"+String(id)).remove();
+                    }
+                    else{
+                        bootbox.alert({
+                            title: "Bandongo, 訂單取消失敗", 
+                            message: response
+                        });
+                    }
+                }
+            );
+        }
+        else
+        {
+            console.log("False");
+        }
+        console.log('This was logged in the callback: ' + result);
+    }
+    });
+    
+}
+</script>
+
+{% endblock %}
+
+
+{% block subcontent %}
+    
+    {% if today_foods or today_drinks %}
+    <div><h3 style="color:#F74906;">本次訂單</h3></div>
+    {% else %}
+    <div><h2>沒有訂單資料</h2></div>
+    {% endif %}
+    
+    {% if today_foods %}
+    <div>
+     <table class ="table">
+        <thead>
+            
+            <tr style="background-color:#EDEDE4;">
+            <input type="hidden" id="foods_len" value="{{ today_foods|length }}"/>
+            <th class = "col-sm-5">餐點品項</th>
+            <th class = "col-sm-2">數量</th>
+            <th class = "col-sm-2">金額</th>
+            <th class = "col-sm-2">備註</th>
+            <th class = "col-sm-1">取消</th>
+            
+            </tr>
+        </thead>
+        <tbody>
+          
+        
+        
+        {% for foods in today_foods %}
+           <tr id="order{{foods.id}}">
+            
+            <td>{{foods.foodName}}</td>
+            <td>{{foods.num}}</td>
+            <td>{{foods.price}}</td>
+            <td>{{foods.remark}}</td>
+            
+            <td><input type="image" onclick="getConfirmationFoods({{foods.id}})" src="{% static 'icon/x_icon.png' %}" alt="Submit" width="12" height="12"></td>
+
+            <!--<td><i class="fa fa-camera-retro fa-lg"></i></td>-->
+          </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    {% endif %}   
+    {% if today_drinks %}
+    <div></div>
+        <table class ="table">
+        <thead>
+            
+            <tr style="background-color:#EDEDE4;">
+            <th class = "col-sm-5">飲料品項</th>
+            <th class = "col-sm-2">數量</th>
+            <th class = "col-sm-2">金額</th>
+            <th class = "col-sm-2">備註</th>
+            <th class = "col-sm-1">取消</th>
+            
+            </tr>
+        </thead>
+        <tbody>
+        {% for drinks in today_drinks %}
+          <tr id="order{{drinks.id}}">
+            <td>{{drinks.drinking}}</td>
+            <td>{{drinks.num}}</td>
+            <td>{{drinks.price}}</td>
+            <td>{{drinks.remark}}</td>
+            
+             
+            <td><input type="image" onclick="getConfirmationDrinks({{drinks.id}})" src="{% static 'icon/x_icon.png' %}" alt="Submit" width="12" height="12"></td>
+          </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+    
+    
+    
+{% endblock %}

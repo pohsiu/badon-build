@@ -1,0 +1,143 @@
+{% extends "bandongo/backend_base.html" %}
+{% load staticfiles%}
+{% block js %}<script src="{% static 'js/backend_order.js' %}"></script>{% endblock %}
+{% block css %}<link rel="stylesheet" type="text/css" href="{% static 'css/backend_order.css' %}">{% endblock %}
+{% block content %}
+<div class="container">
+	{% if schedule %}
+    <div style="position: relative"><h1>Schedule</h1><a class="btn btn-default" href="/backend/schedule/{{schedule.id}}/" role="button" style="position: absolute; right: 8px; bottom: 0;">Detail</a></div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>name</th>
+                    <th>Shop</th>
+                    <th>Shop Phone</th>
+                    <th>Drink</th>
+                    <th>Drink Phone</th>
+                    <th>Due Date Time</th>
+                    <th>Expired</th>
+                    <th>Food Arrived</th>
+                    <th>Drink Arrived</th>
+                    <th>Finished</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td id="id">{{ schedule.id }}</td>
+                    <td>{{ schedule.name }}</td>
+                    <td>{{ schedule.food.name }}</td>
+                    <td>{{ schedule.food.telephone }}</td>
+                    <td>{{ schedule.drink.name }}</td>
+                    <td>{{ schedule.drink.telephone }}</td>
+                    <td>{{ schedule.date }}</td>
+                    <td>{{ schedule.expire }}</td>
+                    <td>{{ schedule.foodArrived }}</td>
+                    <td>{{ schedule.drinkArrived }}</td>
+                    <td>{{ schedule.finish }}</td>
+                </tr>
+            </tbody>
+        </table>
+    	<div><h1>Bandon Orders Type 1</h1></div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Food</th>
+                    <th>Count</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for bag in foodBags %}
+            <tr style="font-weight: bold;">
+                <td>Bag {{ forloop.counter }}</td>
+                <td colspan="2">{{ bag.count }}</td>
+            </tr>
+            	{% for order in bag.orders %}
+                <tr>
+                	<td>{{ order.foodName }}</td>
+                    <td>{{ order.count }}</td>
+                    <td>{{ order.price }}</td>
+                </tr>
+                {% endfor %}
+            {% endfor %}
+            <tr style="font-weight: bold;">
+                <td>Total</td>
+                <td>{{ foodTotalCount }}</td>
+                <td>{{ foodTotalPrice }}</td>
+            </tr>
+            </tbody>
+        </table>
+        <div><h1>Bandon Orders Type 2</h1></div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Food</th>
+                    <th>Count</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+        	{% for order in foodOrders %}
+            <tr>
+            	<td>{{ order.foodName }}</td>
+                <td>{{ order.count }}</td>
+                <td>{{ order.price }}</td>
+            </tr>
+            {% endfor %}
+            <tr style="font-weight: bold;">
+                <td>Total</td>
+                <td>{{ foodTotalCount }}</td>
+                <td>{{ foodTotalPrice }}</td>
+            </tr>
+            </tbody>
+        </table>
+        <div><h1>Drink Orders</h1></div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Drink</th>
+                    <th>Sugar and Ice</th>
+                    <th>Count</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for bag in drinkBags %}
+            <tr style="font-weight: bold;">
+                <td colspan="2">Bag {{ forloop.counter }}</td>
+                <td colspan="2">{{ bag.count }}</td>
+            </tr>
+                {% for order in bag.orders %}
+                <tr>
+                    <td>{{ order.drinking }}</td>
+                    <td>{{ order.remark }}</td>
+                    <td>{{ order.num }}</td>
+                    <td>{{ order.price }}</td>
+                </tr>
+                {% endfor %}
+            {% endfor %}
+            <tr style="font-weight: bold;">
+                <td colspan="2">Total</td>
+                <td>{{ drinkTotalCount }}</td>
+                <td>{{ drinkTotalPrice }}</td>
+            </tr>
+            </tbody>
+        </table>
+    	<div style="margin-top: 20px">
+    	    <input type="checkbox" name="notify" value="notify" checked>notify<br>
+    	    {% if not schedule.foodArrived %}
+                <button id="foodArrived" class="btn btn-default" onclick="arrive('food');">Food Arrived</button>
+            {% endif %}
+            {% if not schedule.drinkArrived %}
+                <button id="drinkArrived" class="btn btn-default" onclick="arrive('drink');">Drink Arrived</button>
+            {% endif %}
+            {% if schedule.foodArrived and schedule.drinkArrived%}
+        	   <button id="finish" class="btn btn-default" onclick="finish();">Finish</button>
+            {% endif %}
+    	</div>
+    {% else %}
+    	<div><h1>No non-finished schedule.</h1></div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "bandongo/backend_base.html" %}
+{% load staticfiles%}
+{% block js %}
+<script src="{% static 'js/backend_message.js' %}"></script>
+<script src="https://cdn.quilljs.com/1.2.2/quill.js"></script>
+{% endblock %}
+{% block css %}
+<link href="https://cdn.quilljs.com/1.2.2/quill.snow.css" rel="stylesheet">
+{% endblock %}
+{% block content %}
+<div class="container">
+    <div><h1>Set Message</h1></div>
+    <div><h3>Message</h3></div>
+    <div>
+        <select id="message" style="width: 20%;" class="selectpicker">
+            {% for message in messages %}
+                <option value="{{message.id}}">{{message.usage}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div><h3>Content</h3></div>
+    <div style="width: 50%;">
+        <div id="editor">
+            {{ messages.0.content|safe }}
+        </div>
+    </div>
+    <div style="margin-top: 20px">
+        <button id="submit" class="btn btn-default" onclick="submit();">Submit</button>
+    </div>
+</div>
+<script>
+var toolbarOptions = [
+  ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+  ['blockquote', 'code-block'],
+
+  [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+
+  [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+
+  ['clean']                                         // remove formatting button
+];
+var quill = new Quill('#editor', {
+    modules: {
+        toolbar: toolbarOptions
+    },
+    theme: 'snow'
+});
+</script>
+{% endblock %}
