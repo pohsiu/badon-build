@@ -235,6 +235,7 @@ def member_log(request,pk):
             listdic.append({"schedule":order.scheduleName,"order":[order]})
 
     latest5 = listdic[:5]
+    print(latest5);
     listDicMonth = []
     for each in sorted_logs:
         flag = False

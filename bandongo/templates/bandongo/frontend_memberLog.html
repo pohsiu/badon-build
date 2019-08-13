@@ -58,10 +58,10 @@
                                         <td>{{dic | get_item:"schedule" }}</td>
                                         {%if each.foodName%}
                                             <td>{{each.scheduleName.food.name}}</td>
-                                            <td>{{each.foodName}}</td>
+                                            <td>{{each.foodName.name}}</td>
                                         {%elif each.drinking%}
                                             <td>{{each.scheduleName.drink.name}}</td>
-                                            <td>{{each.drinking}}</td>
+                                            <td>{{each.drinking.name}}</td>
                                         {%endif%}
                                             <td>{{each.num}}</td>
                                             <td>{{each.price}}</td>
@@ -122,7 +122,7 @@
                                             <td >{{each.scheduleName.date|date:'m-d'}}</td>
                                             {%if each.foodName%}
                                                 <td>{{each.scheduleName.food.name}}</td>
-                                                <td>{{each.foodName}}</td>
+                                                <td>{{each.foodName.name}}</td>
                                             {%elif each.drinking%}
                                                 <td>{{each.scheduleName.drink.name}}</td>
                                                 <td>{{each.drinking}}</td>
@@ -184,7 +184,7 @@
                             {%for savings in savelogs_latest5%}
                                 <tr>
                                     <td>{{savings.tranDate|date:'Y-m-d' }}</td>
-                                    <td>{{savings.adminName}}</td>
+                                    <td>{{savings.adminName.name}}</td>
                                     <td>{{savings.money}}</td>
                                     <td>{{savings.comment}}</td>
                                 </tr>
@@ -234,7 +234,7 @@
                                         {%for each in value%}
                                         <tr>
                                             <td>{{each.tranDate|date:'Y-m-d'}}</td>
-                                            <td>{{each.adminName}}</td>
+                                            <td>{{each.adminName.name}}</td>
                                             <td>{{each.money}}</td>
                                             <td>{{each.comment}}</td>
                                         </tr>    
