@@ -13,12 +13,12 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 try:
     import key
-    print "working"
+    print("working")
     LINE_CHANNEL_ACCESS_TOKEN = key.LINE_CHANNEL_ACCESS_TOKEN
     LINE_CHANNEL_SECRET = key.LINE_CHANNEL_SECRET
     TOKEN = key.TOKEN
 except:
-    print "exception"
+    print("exception")
     LINE_CHANNEL_ACCESS_TOKEN = ''
     LINE_CHANNEL_SECRET = ''
     TOKEN = ''
